@@ -1,0 +1,31 @@
+// HCSR04Ultrasonic/examples/UltrasonicDemo/UltrasonicDemo.pde
+#include <Ultrasonic.h>
+#include <LiquidCrystal.h> // include the library code
+LiquidCrystal lcd(12, 11, 5, 4, 3, 8); // initialize interface pins
+#define TRIGGER_PIN 14
+#define ECHO_PIN 13
+const byte intPin=2; 
+volatile boolean state=LOW;
+Ultrasonic ultrasonic(TRIGGER_PIN, ECHO_PIN);
+
+void setup() {
+Serial.begin(9600);
+lcd.begin(16, 2);
+attachInterrupt(intPin, int0, LOW); 
+}
+
+void loop(){
+  delay(1000);
+}
+void int0() {
+float cmMsec, inMsec;
+long microsec = ultrasonic.Timing();
+cmMsec = ultrasonic.Ranging(CM);
+inMsec = ultrasonic.Ranging(INC);
+//Serial.print(", IN: "); Serial.println(inMsec);
+lcd.setCursor(0, 0);
+lcd.print("MS:"); lcd.print(microsec);
+lcd.setCursor(0, 1);
+lcd.print(" CM:"); lcd.print(cmMsec);
+//lcd.print(" IN:"); lcd.print(inMsec);
+}
